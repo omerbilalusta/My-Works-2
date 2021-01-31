@@ -1,0 +1,113 @@
+#include<stdio.h>
+#include<string.h>
+#define Boyut 100 
+											
+typedef struct Kuyruk
+{ 	
+	int son; 
+	int eleman[Boyut];
+}Kuyruklar;
+
+Kuyruklar kuyruk,*ilk=NULL, *son=NULL,*gecici=NULL;
+FILE *dosya;
+
+
+
+void arama ()
+{
+	char secim[10];
+	char bulma[10];
+	int sayac=1;
+	dosya=fopen("sayilarr.txt","r");
+	if(dosya==NULL)
+	{
+		printf("dosya acilamadi");
+	}
+	
+	printf("aramak istediginiz kisinin ismini giriniz");
+	scanf("%s",secim);
+	printf("\n");
+	
+	while(!feof(dosya))
+	{
+		int sayii;
+		fscanf(dosya,"%d %s",&sayii,bulma);
+		if(strcmp(secim,bulma) == 0)
+		{
+			break;
+		}
+		sayac++;
+		
+	}
+	
+	printf("%s isimli kisi onunde %d kisi vardir \n\n", secim, sayac-1);
+	
+	
+}
+
+
+
+
+void ekleme ()
+{
+	int ekleneceksayi,kontrol=0;
+	char eklenecekisim[10];
+	dosya= fopen("sayilarr.txt","a");
+	fprintf(dosya,"\n");
+	printf("eklemek istediginiz sayiyi giriniz");
+	scanf("%d", &ekleneceksayi);
+	printf("eklemek istdiginiz isim giriniz");
+	scanf("%s",eklenecekisim);
+	
+	fprintf(dosya, "%d %s",ekleneceksayi,eklenecekisim);
+	
+	
+	
+	
+	fclose(dosya);
+}
+
+
+
+
+
+
+int main ()
+{
+	int secim,sayi;
+	char isim[10];
+	
+	
+	kuyruk.son=-1;
+	
+
+	
+	while (1==1)
+	{
+		printf("Ekleme icin 1'e \nSirasini Arama icin 2'e basiniz \n");
+		scanf("%d",&secim);
+		printf("\n");
+		
+		switch(secim)
+		{
+			
+			case 1 :
+				
+				ekleme();
+			
+				break;
+			
+							
+			case 2:
+		
+				arama();
+			
+				break;
+				
+				
+			default:
+				break;	
+			
+		}	
+	}	
+}

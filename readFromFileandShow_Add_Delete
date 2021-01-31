@@ -1,0 +1,209 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+
+							//////=============== Hocam sıralama ve ekleme çalışmamaktadır=========================
+
+typedef struct	n
+{
+	int x;
+	char y[10],z[10];
+	struct n *next;
+}BListe;
+BListe *ilk=NULL, *son=NULL,*gecici=NULL,*bironceki=NULL,*a=NULL;
+
+
+
+int arama(int sayi)
+{
+		gecici=ilk;
+		int sayac=1;
+		while(gecici!=NULL)
+		{
+			if(gecici->x==sayi)
+			{
+				return sayac;
+			}
+			else if(sayac==6)
+			{
+				printf("Aramak istediginiz sayi bulunamadi");
+			}
+			gecici=gecici->next;
+			sayac++;
+		}
+		return 0;
+}
+
+int listele()
+	{
+	gecici=ilk;
+	while(gecici!=NULL)
+		{
+			printf("%d %s %s \n", gecici->x,gecici->y,gecici->z);
+			gecici=gecici->next;
+	
+		}
+	}	
+
+/*
+int ekleme()
+{
+	
+}
+*/
+int silme (int silineceksayi)
+{
+	int b=0;
+	gecici=ilk;
+	while(gecici!=NULL)
+	{
+		if(gecici->x==silineceksayi) 
+		{
+			b++;
+			a=gecici;
+			break;
+		}
+		//bironceki=gecici;
+		gecici=gecici->next;
+	}
+	printf("...");
+	if(b>0)
+	{
+		if(ilk->x==silineceksayi)
+		{
+			a=ilk;
+			ilk=ilk->next;
+			free(a);
+		}
+		else
+		{
+			gecici=ilk;
+			b++;
+			while (gecici->next!=a)
+			{
+				gecici=gecici->next;
+			}
+			gecici->next=gecici->next->next;
+			free(a);
+		}
+		
+	}
+	printf("Silme islemi basarilidir");
+			
+}
+
+int main ()
+{
+	FILE *dosya;
+	int age,silineceksayi;
+	char isim[10];
+	char soyisim[10];
+	int secim,sayi,sayac;
+	ilk=(n*)malloc(sizeof(n));
+	ilk->next=(n*)malloc(sizeof(n));
+	ilk->next->next=(n*)malloc(sizeof(n));
+	ilk->next->next->next=(n*)malloc(sizeof(n));
+	ilk->next->next->next->next=(n*)malloc(sizeof(n));
+	ilk->next->next->next->next->next=(n*)malloc(sizeof(n));
+	ilk->next->next->next->next->next->next=(n*)malloc(sizeof(n));
+	ilk->next->next->next->next->next->next->next=NULL;
+	
+	dosya= fopen("odev.txt","r");
+	if (dosya==NULL)
+	{
+		printf("dosya acilamadi");
+	}
+	gecici=ilk;
+	
+	
+	
+		// Burada dosyadan verileri çekip bağlı listeye yazdırdık
+	
+	while(!feof(dosya)){
+		fscanf(dosya,"%d %s %s", &age,isim,soyisim);
+		
+		gecici->x=age;
+	
+		for(int i=0;i<sizeof(isim)/sizeof(char);i++)
+		{
+			gecici->y[i]=isim[i];
+			
+		}
+		
+		for(int i=0;i<sizeof(soyisim)/sizeof(char);i++)
+		{
+			gecici->z[i]=soyisim[i];
+			
+		}
+
+		
+		gecici=gecici->next;
+		
+		}
+		fclose(dosya);
+	while(1==1){
+	printf("Yapmak istediginiz islemi seciniz == \n Listelemek icin 1'e \n Aramak icin 2'ye \n Silmek icin 3'e basiniz \n Eklemek icin 4'e (calismamaktadir) \n Programdan cikmak icin 9 basiniz'");
+	scanf("%d", &secim);
+	
+	if(secim==1)
+	{
+		listele();
+		
+	}
+	
+	else if(secim==2)
+	{
+		printf("aramak istediginiz sayiyi girin");
+		scanf("%d", &sayi);
+		sayac=arama(sayi);
+		if(sayac==0)
+		{
+			printf("boyle bir sayi bulunmamaktadır");
+		}
+		
+		else{
+			printf("%d sayisi %d. sirada bulundu", sayi,sayac);
+		}
+
+	}
+	else if(secim==3)
+	{
+		printf("silinecek sayiyi giriniz");
+		scanf("%d",&silineceksayi);
+		silme(silineceksayi);
+	}
+	/*
+	else if(secim==4)
+	{
+		
+		ekleme();
+	}
+	*/
+	
+	else
+	{
+		printf("Basariyla programdan ciktiniz"); break;
+	}
+	
+	printf("\n\n===============================================\n\n");
+	
+}
+	
+	// Dosyadan verileri çekmeden sıralama çalışmak  		=============This part is not working :((((((( ==================
+	/*
+	dosya=fopen("bilgi.txt","r");
+	if(dosya==NULL){
+		printf("dosya acilamadi");
+	}
+	while(!feof(dosya)){
+	
+	fscanf(dosya,"%d",&numara);
+	printf("%d",numara);
+	
+
+	
+	}
+	fclose(dosya);
+	*/	
+	return 0;
+}

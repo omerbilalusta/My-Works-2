@@ -1,0 +1,227 @@
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+typedef struct agac
+{
+	int sayi;
+	agac *sag, *sol;
+}agac;
+
+agac *kok=NULL;
+
+
+
+float toplam=0;
+
+int numbercounter=0,sayac2=0,sayac1=0;
+
+
+
+
+
+agac * ekle(agac *kok, int sayi)
+{
+	if(kok==NULL)
+	{
+		agac *ilknode=(agac*)malloc(sizeof(agac));
+		ilknode->sol=NULL;
+		ilknode->sag=NULL;
+		ilknode->sayi=sayi;
+		return ilknode;
+	}
+	
+	if(kok->sayi < sayi)
+	{
+		kok->sag = ekle(kok->sag,sayi);
+		return kok;
+	}
+	
+	kok->sol= ekle(kok->sol,sayi);
+	return kok;
+
+}
+
+
+void listele (agac *kok,int sayi)
+{
+
+	if(kok==NULL)
+	{
+		return;
+	}
+		
+	listele(kok->sol,sayi);
+	
+	//printf("%d ",kok->sayi);
+	if(kok->sayi > sayi)
+	{
+		printf("%d ",kok->sayi);
+	}
+	listele(kok->sag,sayi);
+		
+}
+
+
+void yaprakortalama (agac *kok)
+{
+	if(kok==NULL)
+	{
+		return;
+	}
+		
+	yaprakortalama(kok->sol);
+	
+	
+	sayac2++;
+	
+	if(kok->sol==NULL && kok->sag==NULL)
+	{
+		
+		toplam = toplam + kok->sayi;
+		sayac1++;
+		
+		if(sayac2 == numbercounter)
+		{	
+			float ortalama;
+			ortalama=toplam/sayac1;
+			
+			printf("Yapraklarin ortalamasi ===  %f \n\n",ortalama);
+			toplam=0,sayac2=0,sayac1=0;
+		}
+	}
+	
+	
+	yaprakortalama(kok->sag);
+	
+	
+}
+
+
+
+
+
+int arama(agac *gecici, int sayi,int sayac)
+{
+	if(gecici->sayi == sayi)
+	{
+		printf("Eleman 1 adimda bulundu\n\n");
+		return 0;
+		
+	}
+
+	else if(gecici->sayi < sayi)
+	{
+		sayac++;
+		gecici=gecici->sag;
+		if(gecici==NULL)
+		{
+			return 1;
+			
+		}
+		
+		if(gecici->sayi==sayi)
+		{
+			printf("%d elemani %d adimda bulundu\n\n",gecici->sayi,sayac);
+			return 0;
+		}
+		else
+		{
+			return arama(gecici,sayi,sayac);
+		}	
+	}
+	
+	else if (gecici->sayi > sayi)
+	{
+		sayac++;
+		gecici=gecici->sol;
+		if(gecici==NULL)
+		{
+			return 1;
+			
+		}
+		
+		if(gecici->sayi==sayi)
+		{
+			printf("%d adimda bulundu\n\n",sayac);
+			return 0;
+		}
+		else
+		{	
+			
+			return arama(gecici,sayi,sayac);
+		}
+	}
+}
+
+
+
+
+int main()
+{
+	int sayac=1,counter=0,sayi,toplam=0,sonuc,sonuc1;
+	int secim,eklenecekdeger;
+	agac *gecici=(agac*)malloc(sizeof(agac));
+	
+	while(1)
+	{
+		printf(" Eklemek icin 1'e \n Gireceginiz seviyedeki elemanlari listelemek  icin 2'ye --------CALISMIYOR :( \n Aramak icin 3'e \n Yapraklarin ortalamasi icin 4'e \n Girceginiz degerden buyuk olan sayilari listelemek icin 5'e basiniz \n");
+		scanf("%d", &secim);
+			
+		switch(secim)
+		{
+			case 1:
+				printf("Eklemek istediginiz degeri giriniz ");
+				scanf("%d",&eklenecekdeger);
+				kok=ekle(kok,eklenecekdeger);
+				printf("Basariyla eklendi \n\n");
+				numbercounter++;
+				break;
+				
+			case 2:		
+				
+							/// Kullanıcının girdiği seviyedeki tüm elemanları ekrana yazdıran fonksiyonu yazınız. ----- YAPAMADIM :(
+				
+				break;
+				
+			case 3:
+				int aranacakeleman;
+				gecici=kok;
+				
+				printf("Aramak istediginiz elemani giriniz ");
+				scanf("%d",&aranacakeleman);
+				sonuc=arama(gecici,aranacakeleman,sayac);		
+				
+				if(sonuc==1)
+				{
+					printf("%d elemani  bulunamadi\n\n",aranacakeleman);
+				}
+	
+				break;
+			
+			
+			case 4:
+				
+				yaprakortalama(kok);
+				toplam=0;
+				break;
+				
+			case 5:
+				
+				printf("Kendisinden buyuk sayilari bulmak icin bir sayi giriniz");
+				scanf("%d",&sayi);
+				listele(kok,sayi);
+				printf("\n\n");
+				break;
+			
+			
+			
+		}
+	
+	}
+	
+	
+	
+}

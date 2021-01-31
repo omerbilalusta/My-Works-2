@@ -1,0 +1,138 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define boyut 100
+
+int tepe=0;
+
+typedef struct yigin{
+	
+	int dizi[boyut];
+	
+	
+}yigin_t;
+
+yigin_t yeni_yigin;
+
+
+int ekleme(int sayi)
+{
+	if(tepe+1==boyut)
+	{
+		printf("Stack zaten dolu");
+	}
+	else
+	{
+		yeni_yigin.dizi[tepe]=sayi;
+		tepe++;
+	}
+	return 1;
+}
+
+
+void listele()
+{
+	int b;
+	b=tepe;
+	for(int j=0;j<tepe;j++){
+		printf("%d-", yeni_yigin.dizi[b-1]);
+		b=b-1;
+	}
+	
+	printf("\n");
+}
+
+
+int silme()
+{
+	int sayi_silme;
+	if(tepe==0)
+	{
+		printf("Stack zaten bos");
+	}
+	else
+	{
+		sayi_silme=yeni_yigin.dizi[tepe-1];
+		printf("%d", sayi_silme);
+		yeni_yigin.dizi[tepe-1]=NULL;
+		tepe=tepe-1;
+	}
+	return sayi_silme;	
+}
+
+
+int  gerialma(int secim_s, int sayi_silme)
+{
+	if(secim_s==1)
+	{
+		silme();
+		printf("Geri alma islemi ( silme ) basarili");
+		//secim_s=0;
+		
+	}
+	
+	else if(secim_s==0)
+	{
+		ekleme(sayi_silme);
+		printf("Geri alma islemi ( ekleme ) basarili");
+	}
+	printf("..");
+}
+
+
+
+
+
+
+
+int main()
+{
+	int sayi_silme;
+	int secim;
+	int secim_s=0;
+	int sayi;
+	
+	while(1==1)
+	{
+		printf("\n Eklemek icin 1 \n Silmek icin 2 \n Listelemek icin 3'e  \n Geri almak icin 4'e basiniz  ");
+		scanf("%d", &secim);
+		if(secim>=5)
+		{
+			break;
+		}
+		switch(secim)
+		{
+			case 1 :
+			{
+				secim_s=1;
+				printf("Deger giriniz\n");
+				scanf("%d",&sayi);
+				secim_s=ekleme(sayi);
+				printf("Ekleme islemi basarili");
+				break;
+			}
+			case 2 :
+			{
+				secim_s=0;
+				sayi_silme=silme();
+				printf("Silme islemi basarili");
+				break;
+			}
+			case 3 :
+			{
+				listele();
+				break;
+			}
+			case 4 :
+			{
+				gerialma(secim_s,sayi_silme);
+				break;	
+			}
+			default :
+			{
+				printf("Gecersiz deger girdiniz");
+				break;
+			}
+		}
+	}
+}

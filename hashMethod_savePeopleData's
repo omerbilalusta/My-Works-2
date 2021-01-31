@@ -1,0 +1,297 @@
+#include<stdio.h>
+
+struct musteri{
+	int no;
+	char ad[10], soyad[10];
+}musteri[10];
+
+
+int main()
+{
+	
+	FILE *dosya;
+	dosya=fopen("veri.txt","r");
+	
+	int sayac1=0,ortalamadeger;
+	int toplam=0;
+	int sayacac=0;
+	int q=0,aranacaknumara,sayac=1;
+	int hash_tablo[10][2];
+	int sayi,i=0,sira,secim;
+	int kontrol=0,kontrol2=0;
+	char silmeisim=NULL,okunanisim[10],okunansoyisim[10];
+	
+	for(int i=0;i<10;i++)
+	{
+		hash_tablo[i][0]=-1;
+		hash_tablo[i][1]=-1;		
+	}
+	
+	
+	if(dosya==NULL)
+	{
+		printf("dosya acilamadi");
+	}
+	
+	while(!feof(dosya))
+	{
+		sayacac++;
+		kontrol=0;
+		fscanf(dosya,"%d",&sira);
+		
+		sayi=sira%10;
+		
+		fscanf(dosya,"%s",&okunanisim);
+		fscanf(dosya,"%s",&okunansoyisim);
+		
+		
+		for(int j=0;j<10;j++)
+		{
+			if(hash_tablo[j][0]%10==sayi)
+			{
+			
+				for(int k=0;k<10;k++)
+				{
+					if(hash_tablo[k][0]==-1)
+					{
+						hash_tablo[k][0]=sira;
+						musteri[k].no=sira;
+						hash_tablo[j][1]=k;
+						for(int l=0;l<10;l++)
+						{
+							
+						musteri[k].ad[l]=okunanisim[l];
+						musteri[k].soyad[l]=okunansoyisim[l];	
+							
+						}
+
+						kontrol=1;
+						
+						break;	
+					}
+					
+				
+				}
+				break;
+			}
+		}
+
+		
+		
+		
+		if(kontrol==0)
+		{
+			
+			musteri[sayi].no=sira;
+			for(int l=0;l<10;l++)
+			{
+				musteri[sayi].ad[l]=okunanisim[l];
+				musteri[sayi].soyad[l]=okunansoyisim[l];		
+		
+			}
+
+		
+		hash_tablo[sayi][0]=sira;	
+		
+		}
+
+	
+		i++;
+	}
+
+	
+	while(1==1)
+	{	
+		printf(" Ekleme islemi icin 1'e\n Arama islemi icin 2'ye\n Silme islemi icin 3'e\n Hash tablosu listeleme icin 4'e\n Veri listesini ekrana yazdirmak icin 5'e\n Ortalama adim sayisi icin 6'ya basiniz \n");
+		scanf("%d",&secim);
+	
+		switch(secim)
+		{
+			case 1: // ekleme islemi
+				sayacac++;
+				int ekleneceksayi,modsayi;
+				char eklenecekisim[10],ekleneceksoyisim[10];
+				printf("Eklemek istediginiz kisinin Numarasini,Ismini ve Soyismini giriniz her giristen sonra ENTER'a basiniz\n");
+				scanf("%d",&ekleneceksayi);
+				scanf("%s",&eklenecekisim);
+				scanf("%s",ekleneceksoyisim);
+				
+				modsayi=ekleneceksayi%10;
+				
+	
+				
+				for(int z=0;z<10;z++)
+				{
+					if(hash_tablo[z][0]%10==modsayi)
+					{
+						for(int t=0;t<10;t++)
+						{
+							if(hash_tablo[t][0]==-1)
+							{
+								hash_tablo[t][0]=ekleneceksayi;
+								musteri[t].no=ekleneceksayi;
+								hash_tablo[z][1]=t;
+								for(int y=0;y<10;y++)
+								{
+									musteri[t].ad[y]=eklenecekisim[y];
+									musteri[t].soyad[y]=ekleneceksoyisim[y];
+									
+								}
+								kontrol2=1;
+								printf("Ekleme islemi basarili \n\n");
+								break;
+							}
+						}
+						break;	
+					}	
+				}
+				
+				if(kontrol2==1)
+				{
+					break;
+				}
+			
+				
+				
+				for(int j=0;j<10;j++)
+				{
+					if(modsayi==j)
+					{
+						hash_tablo[j][0]=ekleneceksayi;
+						musteri[j].no=ekleneceksayi;
+						for(int k=0;k<10;k++)
+						{
+							musteri[j].ad[k]=eklenecekisim[k];
+							musteri[j].soyad[k]=ekleneceksoyisim[k];
+						}
+						
+						printf("Ekleme islemi basarili \n\n");
+					}
+					
+				}
+		
+		
+				break; 
+		
+			case 2: // arama islemi
+				
+				printf("Aramak istediginiz kisinin numarasini giriniz\n\n");
+				scanf("%d",&aranacaknumara);
+				
+				if(hash_tablo[aranacaknumara%10][0]==aranacaknumara)
+				{
+					printf("%d %s %s \n\n",aranacaknumara,musteri[aranacaknumara%10].ad,musteri[aranacaknumara%10].soyad);
+					printf("Veri %d adimda bulundu\n\n",sayac);
+					
+					
+				}
+				else if(hash_tablo[hash_tablo[aranacaknumara%10][1]][0]==aranacaknumara)
+				{
+					sayac++;
+					printf("%d %s %s \n\n",aranacaknumara,musteri[hash_tablo[aranacaknumara%10][1]].ad,musteri[hash_tablo[aranacaknumara%10][1]].soyad);
+					printf("Veri %d adimda bulundu\n\n",sayac);
+					
+				}
+				
+				
+				else if(hash_tablo[hash_tablo[hash_tablo[aranacaknumara%10][1]][1]][0]==aranacaknumara)
+				{
+					sayac++;
+					sayac++;
+					printf("%d %s %s \n\n",aranacaknumara,musteri[hash_tablo[hash_tablo[aranacaknumara%10][1]][1]].ad,musteri[hash_tablo[hash_tablo[aranacaknumara%10][1]][1]%10].soyad);
+					printf("Veri %d adimda bulundu\n\n",sayac);
+				}
+				else
+				{
+					printf("Kullanici bulunamadi\n\n");
+				}
+		
+				break;
+				
+				
+			case 3: // silme islemi
+				printf("\n\n");
+				int secim1;
+				printf("Silmek istediginiz kisinin numarasini yaziniz\n");
+				scanf("%d",&secim1);
+				printf("\n");
+				for(int j=0;j<10;j++)
+				{
+					
+					if(hash_tablo[j][0]==secim1)
+					{
+						
+						hash_tablo[j][0]=-1;
+						musteri[j].no=0;
+						for(int k=0;k<10;k++)
+						{
+							musteri[j].ad[k]=silmeisim;
+							musteri[j].soyad[k]=silmeisim;
+						}
+						printf("silme islemi basarili\n");
+						break;
+					}
+					if(j==9)
+					{
+						printf("Girdiginiz sayi bulunamadi\n");
+					}
+				}
+			
+			
+			
+				break;
+				
+			case 4: // hash tablosu listeleme
+				printf("\n\n");
+				for(int j=0;j<10;j++)
+				{
+					
+					printf("%d %d\n",hash_tablo[j][0],hash_tablo[j][1]);
+			
+				}
+				printf("\n\n");
+				break;
+			
+			
+			case 5: // veri listesini ekrana yazdırma
+				printf("\n\n");
+				for(int j=0;j<10;j++)
+				{
+					if(musteri[j].no==0)
+					{
+						goto OUT;
+					}
+					printf("%d %s %s\n", musteri[j].no, musteri[j].ad, musteri[j].soyad);
+					OUT:
+					q++;
+				}
+				printf("\n\n");
+				break;
+				
+		
+			case 6: // ortalama adim sayisi
+				
+				ortalamadeger=sayacac/3.6;
+				printf("Ortalama Adim Sayisi ===  %d\n\n",ortalamadeger);
+				
+			
+			
+				break;
+					
+						
+			default:
+			
+				break;
+		
+		
+		printf("\n\n");
+		}
+	}
+
+	fclose(dosya);
+	
+}
+
+
+
+// Note: You need to add txt file.

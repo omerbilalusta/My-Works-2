@@ -2,6 +2,11 @@
 #include<stdlib.h>
 #include<conio.h>
 
+
+
+							I did not comlplete this project with success. Add and Show Function is not working.
+
+
 							//////=============== Hocam sıralama ve ekleme çalışmamaktadır=========================
 
 typedef struct	n
